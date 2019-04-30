@@ -22,7 +22,7 @@ class Todo extends Component {
         <span className="todo-item">{this.props.todo.body}</span>
         <span className='edit' onClick={this.toggleBodyForm}>Edit</span>
         <span className="remove" onClick={this.deleteClickedTodo}>REMOVE</span>
-        <TodoForm todo={this.props.todo} style={this.state.formStyle} autoFocus={true} buttonName="Update Todo!" updateTodo={this.props.updateTodo} toggleBodyForm={this.toggleBodyForm} />
+        <TodoForm todo={this.props.todo} style={this.state.formStyle}  buttonName="Update Todo!" updateTodo={this.props.updateTodo} toggleBodyForm={this.toggleBodyForm} />
       </li>
     )
   }

@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 
 class TodoForm extends Component {
     state = {
-      todo: ''
+      todo: this.props.todo.body,
     }
 
   onChange = (e) => {
     this.setState({
-      todo: e.target.value
+      todo: e.target.value,
     })
   }
 
@@ -25,7 +25,6 @@ class TodoForm extends Component {
       <div style={this.props.style} className='todoForm'>
         <form onSubmit={ this.onSubmit }>
           <input
-            autoFocus={this.props.autoFocus}
             onChange={ this.onChange }
             placeholder='Write a todo here ...'
             type='text'
