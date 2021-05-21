@@ -16,18 +16,19 @@ class TodoForm extends Component {
     const todo = this.props.todo;
     todo.body = this.state.todo;
     this.props.updateTodo(todo);
-    this.setState({ todo: '' });
+    // this.setState({ todo: '' });
     this.props.toggleBodyForm();
   }
 
   render(){
     return (
-      <div style={this.props.style} className='todoForm'>
+      <div style={this.props.style} className='todoForm' data-testid='todo-form'>
         <form onSubmit={ this.onSubmit }>
           <input
             onChange={ this.onChange }
             placeholder='Write a todo here ...'
             type='text'
+            name='body'
             value={this.state.todo} />
           <button type='submit'>Save</button>
         </form>
