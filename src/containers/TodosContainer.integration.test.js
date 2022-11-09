@@ -1,13 +1,17 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { within } from '@testing-library/dom'
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event'
 import axios from 'axios'
 
 import TodosContainer from './TodosContainer'
+// import { act } from 'react-dom/test-utils'
 
 jest.mock('axios')
+const getResultsEmpty = {data: {
+  todos: []
+}}
 const getResults = {data: {
   todos: [
     {
@@ -38,9 +42,11 @@ const deleteResults = {
 }
 
 describe('TodosContainer', () => {
-  test('initial state', () => {
-    axios.get.mockResolvedValue(getResults);
-    render(<TodosContainer />)
+  test('initial state', async () => {
+    axios.get.mockResolvedValue(getResultsEmpty);
+    await act( async () => {
+      render(<TodosContainer />)
+    })
 
     expect(screen.getByPlaceholderText('Honey, Do this')).toHaveValue('')
     expect(screen.getByRole('button', {name: /now/i}))
@@ -49,7 +55,9 @@ describe('TodosContainer', () => {
 
   test('fetch and display todos',  async () => {
     axios.get.mockResolvedValue(getResults);
-    render(<TodosContainer />)
+    await act( async () => {
+      render(<TodosContainer />)
+    })
 
     expect(await screen.findByTestId('todos-ul')).not.toBeEmptyDOMElement()
     expect(screen.getByText('Make pizza')).toBeInTheDocument()
@@ -59,7 +67,9 @@ describe('TodosContainer', () => {
   test('create todo', async () => {
     axios.get.mockResolvedValue(getResults)
     axios.post.mockResolvedValue(postResults)
-    render(<TodosContainer />)
+    await act( async () => {
+      render(<TodosContainer />)
+    })
 
     expect(await screen.findAllByRole('listitem')).toHaveLength(3)
     const createInp = screen.getByPlaceholderText(/honey, do this/i)
@@ -73,18 +83,21 @@ describe('TodosContainer', () => {
   test('update todo', async () => {
     axios.get.mockResolvedValue(getResults)
     axios.put.mockResolvedValue({})
-    render(<TodosContainer />)
+    await act( async () => {
+      render(<TodosContainer />)
+    })
+
+    const user = userEvent.setup()
 
     const todo = within((await screen.findAllByRole('listitem'))[0])
     expect(todo.getByTestId('todo-form')).not.toBeVisible()
-    userEvent.click(todo.getByText('Edit'))
+    await user.click(todo.getByText('Edit'))
     expect(todo.getByTestId('todo-form')).toBeVisible()
 
     const body = todo.getByPlaceholderText(/Write a todo here/i)
-    body.setSelectionRange(5,5)
-    userEvent.type(body, 'pepperoni ')
-    userEvent.click(todo.getByRole('button'))
-    expect(await todo.findByText(/^Make pepperoni pizza$/)).toBeInTheDocument()
+    await user.type(body, 'pepperoni ', {initialSelectionStart: 4, initialSelectionEnd: 5})
+    await user.click(todo.getByRole('button'))
+    expect(await todo.findByText(/^Make pneepxpteroni pizza$/)).toBeInTheDocument()
   })
 
   // test('delete todo', async () => {
