@@ -9,11 +9,8 @@ import TodosContainer from './TodosContainer'
 // import { act } from 'react-dom/test-utils'
 
 jest.mock('axios')
-const getResultsEmpty = {data: {
-  todos: []
-}}
-const getResults = {data: {
-  todos: [
+const getResultsEmpty = {data: []}
+const getResults = {data: [
     {
       _id: 87634,
       body: 'Make pizza'
@@ -26,8 +23,7 @@ const getResults = {data: {
       _id: 929,
       body: 'Mow the lawn'
     },
-  ]
-}}
+]}
 const postResults = {
   data: {
     _id: 9239,
