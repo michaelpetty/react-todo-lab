@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const endPoint = 'https://super-crud.herokuapp.com/todos';
+const endPoint = 'https://api.codetojoy.tech:4200/api/v1/todos';
 
 class TodoModel {
   static all() {
