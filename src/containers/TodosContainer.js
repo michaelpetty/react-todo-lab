@@ -16,7 +16,7 @@ class TodosContainer extends Component {
     TodoModel.all()
       .then((res) => {
           this.setState({
-            todos: res.data.todos
+            todos: res.data
           })
     })
   }
